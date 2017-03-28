@@ -1,0 +1,57 @@
+﻿@{
+    ViewBag.Title = "登录";
+}
+<div id="login" class="templatemo-content-widget templatemo-login-widget white-bg">
+    <header class="text-center">
+        <div class="square"></div>
+        <h1>配置平台</h1>
+    </header>
+    <form class="templatemo-login-form" v-on:submit.prevent="login">
+        <validator name="validation">
+            <div class="form-group">
+                <div class="input-group">
+                    <div class="input-group-addon"><i class="fa fa-user fa-fw"></i></div>
+                    <input type="text" class="form-control" v-model="username" v-validate:username="{
+                           required:{rule:true,message: '用户名不能为空'}
+                           }" placeholder="请输入账号" />
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="input-group">
+                    <div class="input-group-addon"><i class="fa fa-key fa-fw"></i></div>
+                    <input type="password" class="form-control" v-model="password" v-validate:password="{
+                           required:{rule:true,message: '密码不能为空'}
+                           }" placeholder="请输入密码" />
+                </div>
+            </div>
+            <div class="form-group">
+                <button type="submit" v-if="$validation.valid" class="templatemo-blue-button width-100">登录</button>
+            </div>
+            @*<div class="errors">
+                    <validator-errors partial="myErrorTemplate" :validation="$validation">
+                    </validator-errors>
+                </div>*@
+        </validator>
+    </form>
+</div>
+<script type="text/javascript">
+    //Vue.partial('myErrorTemplate', '<p>{{message}}</p>')
+    var vue = new Vue({
+        el: '#login',
+        data: {
+            username: '',
+            password: ''
+        },
+        methods: {
+            login: function () {
+                this.$http.get('/Home/UserLogin?UserName=' + this.username + '&PassWord=' + this.password, function (data, status, request) {
+                    if (data.IsSuccess) {
+                        location.href = '/App/Index';
+                    } else {
+                        alert('用户名密码错误！');
+                    }
+                });
+            }
+        }
+    });
+</script>

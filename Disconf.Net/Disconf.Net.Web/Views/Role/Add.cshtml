@@ -1,0 +1,101 @@
+﻿@{
+    Layout = "~/Views/Shared/_HomeLayout.cshtml";
+    ViewBag.Title = "新增角色";
+}
+<div class="templatemo-content-widget white-bg">
+    <div class="panel panel-default no-border">
+        <div class="panel-heading border-radius-10">
+            <h2>新增角色</h2>
+        </div>
+        <div class="panel-body" id="app">
+            <validator name="validation">
+                <div class="row form-group">
+                    <div class="col-lg-6 col-md-6 form-group">
+                        <label>角色名称</label>
+                        <input type="text" v-model="name" class="form-control" placeholder="名称" v-validate:name="{
+                           required:{rule:true,message: '名称不能为空'}
+                           }" />
+                    </div>
+                </div>
+                <div class="row form-group">
+                    <div class="panel panel-default templatemo-content-widget white-bg no-padding templatemo-overflow-hidden">
+                        <div class="panel-heading templatemo-position-relative"><h2 class="text-uppercase">角色权限</h2></div>
+                        <div class="table-responsive">
+                            <table class="table table-striped table-bordered">
+                                <tbody>
+                                    <tr v-for="item in items" track-by="$index">
+                                        <td>
+                                            <div class="margin-right-15 templatemo-inline-block">
+                                                <input type="checkbox" v-on:click="checkOnChild(item.Id)" value="{{item.Id}}" id="c{{item.Id}}">
+                                                <label for="c{{item.Id}}" class="font-weight-400"><span></span></label>
+                                            </div>
+                                            <label>{{item.Name}}</label>
+                                        </td>
+                                        <td>
+                                            <div v-for="child in item.Children" track-by="$index">
+                                                <div class="margin-right-15 templatemo-inline-block">
+                                                    <input type="checkbox" v-on:click="checkOn(child.ParentId,child.Id)" value="{{child.Id}}" class="check_{{child.ParentId}}" id="c{{child.Id}}">
+                                                    <label for="c{{child.Id}}" class="font-weight-400"><span></span></label>
+                                                </div>
+                                                <label>{{child.Name}}</label>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div class="row form-group">
+                    <div class="col-lg-6 col-md-6 form-group">
+                        <button v-if="$validation.valid" v-on:click="add" class="templatemo-white-button">确定</button>
+                    </div>
+                </div>
+            </validator>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    var vue = new Vue({
+        el: '#app',
+        data: {
+            name: '',
+            items: []
+        },
+        ready: function () {
+            var _self = this;
+            _self.$http.get('/Role/GetPerList', function (data, status, request) {
+                $.each(data, function (i, item) {
+                    item.Num = i + 1;
+                    _self.items.push(item);
+                });
+            });
+        },
+        methods: {
+            add: function (event) {
+                var _ids = "";
+                var _list = $("input:checkbox:checked");
+                $.each(_list, function (i, item) {
+                    _ids += item.defaultValue + "|";
+                });
+                this.$http.get('/Role/Insert?Name=' + this.name + '&PermissionIds=' + _ids.substring(0, _ids.length - 1), function (data, status, request) {
+                    if (data.IsSuccess) {
+                        location.href = '/Role/Index';
+                    } else {
+                        alert(data.ErrorMsg);
+                    }
+                });
+            },
+            checkOn: function (parentId, id) {
+                if ($("#c" + id).is(":checked")) {
+                    $("#c" + parentId).prop("checked", true);
+                }
+            },
+            checkOnChild: function (id) {
+                if (!$("#c" + id).is(":checked")) {
+                    $(".check_" + id).prop("checked", false);
+                }
+            }
+        }
+    });
+</script>

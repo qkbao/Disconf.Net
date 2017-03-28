@@ -1,0 +1,60 @@
+﻿@{
+    Layout = "~/Views/Shared/_HomeLayout.cshtml";
+    ViewBag.Title = "新增环境";
+}
+<div class="templatemo-content-widget white-bg">
+    <div class="panel panel-default no-border">
+        <div class="panel-heading border-radius-10">
+            <h2>新增环境</h2>
+        </div>
+        <div class="panel-body" id="app">
+            <validator name="validation">
+                <div class="row form-group">
+                    <div class="col-lg-6 col-md-6 form-group">
+                        <label>环境名称</label>
+                        <input type="text" v-model="name" class="form-control" placeholder="名称" v-validate:name="{
+                           required:{rule:true,message: '名称不能为空'}
+                           }" />
+                    </div>
+                </div>
+                <div class="row form-group">
+                    <div class="col-lg-6 col-md-6 form-group">
+                        <label>环境描述</label>
+                        <textarea type="text" v-model="description" class="form-control" placeholder="描述" v-validate:description="{
+                           required:{rule:true,message: '描述不能为空'}
+                           }"></textarea>
+                    </div>
+                </div>
+                <div class="row form-group">
+                    <div class="col-lg-6 col-md-6 form-group">
+                        <button href="/App/Add" v-if="$validation.valid" v-on:click="add" class="templatemo-white-button">确定</button>
+                    </div>
+                </div>
+            </validator>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    var vm = new Vue({
+        el: '#app',
+        data: {
+            name: '',
+            description: ''
+        },
+        methods: {
+            add: function (event) {
+                if (/[\u4E00-\u9FA5]/i.test(this.name)) {
+                    alert('不能输入中文');
+                    return false;
+                }
+                this.$http.get('/Env/Insert?Name=' + this.name + '&Description=' + this.description, function (data, status, request) {
+                    if (data.IsSuccess) {
+                        location.href = '/Config/Index';
+                    } else {
+                        alert(data.ErrorMsg);
+                    }
+                });
+            }
+        }
+    });
+</script>

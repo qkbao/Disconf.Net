@@ -1,0 +1,55 @@
+﻿@{
+    ViewBag.Title = "新增App";
+}
+<div class="panel-heading border-radius-10">
+    <h2>新增App</h2>
+
+</div>
+<div class="panel-body" id="app">
+    <div class="form-group text-left">
+        <a href="/App/index" class="templatemo-white-button">返回</a>
+    </div>
+    <validator name="validation">
+        <div class="row form-group">
+            <div class="col-lg-6 col-md-6 form-group">
+                <label>App名称</label>
+                <input type="text" v-model="name" class="form-control" placeholder="名称" v-validate:name="{
+                           required:{rule:true,message: '名称不能为空'}
+                           }" />
+            </div>
+        </div>
+        <div class="row form-group">
+            <div class="col-lg-6 col-md-6 form-group">
+                <label>App描述</label>
+                <textarea type="text" v-model="description" class="form-control" placeholder="描述" v-validate:description="{
+                           required:{rule:true,message: '描述不能为空'}
+                           }"></textarea>
+            </div>
+        </div>
+        <div class="row form-group">
+            <div class="col-lg-6 col-md-6 form-group">
+                <button v-if="$validation.valid" v-on:click="add" class="templatemo-white-button">确定</button>
+            </div>
+        </div>
+    </validator>
+</div>
+<script type="text/javascript">
+    var vue = new Vue({
+        el: '#app',
+        data: {
+            name: '',
+            description: ''
+        },
+        methods: {
+            add: function (event) {
+                this.$http.get('/App/Insert?Name=' + this.name + '&Description=' + this.description, function (data, status, request) {
+                    if (data.IsSuccess) {
+                        location.href = '/App/Index';
+                    } else {
+                        alert(data.ErrorMsg);
+                    }
+                });
+            }
+        }
+    });
+</script>

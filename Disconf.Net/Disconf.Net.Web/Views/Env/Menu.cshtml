@@ -1,0 +1,40 @@
+﻿@{var user = (Disconf.Net.Domain.Models.User)Session["user"];}
+@model List<Disconf.Net.Domain.Models.Envs>
+<nav class="templatemo-left-nav">
+    <ul id="layout">
+        @foreach (var item in Model)
+        {
+            <li v-for="item in items" class="rightClick">
+                <a href="/Config/List?id=@item.Id" id="@item.Id">
+                    @item.Name
+                    (@item.Description)
+                </a>
+            </li>
+        }
+        @if (user.IsSystem)
+        {
+            <li><a href="/Template/Index">模板</a></li>
+            <li><a href="/User/Index">用户管理</a></li>
+            <li><a href="/Role/Index">角色管理</a></li>
+            <li><a href="/OLog/Index">日志</a></li>
+        }
+        <li><a href="/App/Index"><i class="fa fa-eject fa-fw"></i>返回App</a></li>
+    </ul>
+</nav>
+<script type="text/javascript">
+    $(function () {
+        $("a").each(function () {
+            var _href = window.location.href;
+            var _index = $(this).attr('href');
+            if (_href != undefined && _index != undefined && _href.indexOf(_index.split('/')[1]) >= 0) {
+                if (_index.split('/')[1] == "Config") {
+                    if (_href.indexOf(_index.split('/')[2]) >= 0) {
+                        $(this).addClass('active');
+                    }
+                } else {
+                    $(this).addClass('active');
+                }
+            }
+        });
+    });
+</script>

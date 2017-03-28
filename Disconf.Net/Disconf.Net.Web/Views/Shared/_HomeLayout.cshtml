@@ -1,0 +1,50 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=gb2312" />
+    <title>@ViewBag.Title</title>
+    @Styles.Render("~/Content/css/bootstrap.min.css")
+    @Styles.Render("~/Content/css/font-awesome.min.css")
+    @Styles.Render("~/Content/css/templatemo-style.css")
+    @Styles.Render("~/Content/css/context.standalone.css")
+    @Styles.Render("~/Content/laydate/need/laydate.css")
+    @Styles.Render("~/Content/laydate/skins/default/laydate.css")
+    <script src="@Url.Content("~/Scripts/vue.js")"></script>
+    <script src="@Url.Content("~/Scripts/vue-validator.min.js")"></script>
+    <script src="@Url.Content("~/Scripts/vue-resource.min.js")"></script>
+    <script src="@Url.Content("~/Scripts/jquery-1.10.2.min.js")"></script>
+    <script src="@Url.Content("~/Content/laydate/laydate.js")"></script>
+    <script src="@Url.Content("~/Scripts/common.js")"></script>
+    <script src="@Url.Content("~/Scripts/context.js")"></script>
+    <script src="@Url.Content("~/Scripts/demo.js")" charset="gb2312"></script>
+</head>
+<body>
+    <!-- Left column -->
+    <div class="templatemo-flex-row">
+        <div class="templatemo-sidebar">
+            <header class="templatemo-site-header">
+                <div class="square"></div>
+                <h1>配置平台</h1>
+                <a href="/Env/Add" style="font-size: 50px;color: #fff;">+</a>
+            </header>
+            <div class="mobile-menu-icon">
+                <i class="fa fa-bars"></i>
+            </div>
+            @Html.Action("Menu", "Env")
+        </div>
+        <!-- Main content -->
+        <div class="templatemo-content col-1 light-gray-bg">
+            <div class="templatemo-content col-1 light-gray-bg">
+                <div class="templatemo-content-container">
+                    @RenderBody()
+                </div>
+                <footer class="text-right">
+                    <p>
+                        Copyright &copy; 2016 | Designed by SuperDp
+                    </p>
+                </footer>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

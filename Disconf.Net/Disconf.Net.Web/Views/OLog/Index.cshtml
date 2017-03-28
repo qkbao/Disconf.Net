@@ -1,0 +1,98 @@
+﻿@{
+    Layout = "~/Views/Shared/_HomeLayout.cshtml";
+    ViewBag.Title = "查看日志";
+    var index = 1;
+}
+@using X.PagedList.Mvc;
+@model Disconf.Net.Model.ViewModel.LogListVM
+<div class="templatemo-content-widget white-bg">
+    <div class="panel panel-default no-border">
+        <div class="panel-heading border-radius-10">
+            <h2>查看日志</h2>
+        </div>
+        @using (Html.BeginForm("Index", ViewContext.RouteData.GetRequiredString("controller"), new { page = "" }, FormMethod.Post, new { id = "searchForm" }))
+            { 
+            <div class="row">
+                <div class="form-group">
+                    <div class="col-sm-12 form-group" style="margin-top:10px;">
+                        <div class="col-sm-8">
+                            <label>操作时间：</label>
+                            <input type="text" id="StartTime" name="StartTime" value="@(Model.StartTime.HasValue?Model.StartTime.Value.ToString("yyyy-MM-dd"):string.Empty)" placeholder="开始时间" class="laydate-icon" readonly="readonly">
+                            &nbsp;至&nbsp;
+                            <input type="text" id="EndTime" name="EndTime" value="@(Model.EndTime.HasValue?Model.EndTime.Value.ToString("yyyy-MM-dd"):string.Empty)" placeholder="结束时间" class="laydate-icon" readonly="readonly">
+                        </div>
+                        <div class="col-sm-2">
+                            <label>关键词：</label>
+                            <input style="position:absolute;margin-left: 60px;top: -2px;" class="form-control" type="text" name="content" id="content" value="@Model.Content" placeholder="支持模糊搜索">
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group text-right">
+                    <div class="col-sm-6">
+                        <button type="submit" id="search" class="templatemo-white-button">搜索</button>
+                    </div>
+                </div>
+            </div>
+        }
+        <div class="panel-body">
+            <div class="templatemo-content-widget no-padding">
+                <div class="panel panel-default table-responsive">
+                    <table class="table table-striped table-bordered templatemo-user-table" style="table-layout:fixed;">
+                        <thead>
+                            <tr>
+                                <td style="width:40px">序号</td>
+                                <td style="width:100px">用户名</td>
+                                <td>操作内容</td>
+                                <td style="width:100px">时间</td>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model.Logs)
+                            {
+                                <tr @if ((index + 1) % 2 != 0) { <text> class="mactive" </text>                              }>
+                                    <td>
+                                        @(((Model.Logs.PageNumber - 1) * Model.Logs.PageSize) + index)
+                                    </td>
+                                    <td>
+                                        @item.Name
+                                    </td>
+                                    <td class="control-content textDis" title="@item.Content">
+                                        <span>@item.Content</span>
+                                    </td>
+                                    <td>
+                                        @item.Ctime.ToString("yyyy-MM-dd HH:mm:ss")
+                                    </td>
+                                </tr>
+                                index++;
+                            }
+                        </tbody>
+                    </table>
+                </div>
+                <div>
+                    当前第<span class='black1'>@Model.Logs.PageNumber</span>页
+                    &#12288
+                    共<span>@Model.Logs.PageCount</span>页<span>（共@(Model.Logs.TotalItemCount)条）</span>
+                    @if (Model.Logs.PageCount > 1)
+                    {
+                        @Html.PagedListPager(Model.Logs, page => Url.Action("Index", new
+                   {
+                       page,
+                       StartTime = Model.StartTime.HasValue ? Model.StartTime.Value.ToString("yyyy-MM-dd") : string.Empty,
+                       EndTime = Model.EndTime.HasValue ? Model.EndTime.Value.ToString("yyyy-MM-dd") : string.Empty,
+                       content = Model.Content
+                   }), new PagedListRenderOptions { LinkToFirstPageFormat = "首页", LinkToPreviousPageFormat = "上一页", LinkToNextPageFormat = "下一页", LinkToLastPageFormat = "末页" })
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    $(function () {
+        $(".laydate-icon:not(.laydate-icon2)").click(function () {
+            laydate({
+                max: laydate.now(+0), //+1代表明天，+2代表后天，以此类推
+            });
+        });
+    });
+</script>

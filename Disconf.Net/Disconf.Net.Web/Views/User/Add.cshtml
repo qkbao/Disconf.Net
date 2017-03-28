@@ -1,0 +1,96 @@
+﻿@{
+    Layout = "~/Views/Shared/_HomeLayout.cshtml";
+    ViewBag.Title = "新增用户";
+}
+<div class="templatemo-content-widget white-bg">
+    <div class="panel panel-default no-border">
+        <div class="panel-heading border-radius-10">
+            <h2>新增用户</h2>
+        </div>
+        <div class="panel-body" id="app">
+            <validator name="validation">
+                <div class="row form-group">
+                    <div class="col-lg-6 col-md-6 form-group">
+                        <label>姓名</label>
+                        <input type="text" v-model="name" class="form-control" placeholder="姓名" v-validate:name="{
+                           required:{rule:true,message: '姓名不能为空'}
+                           }" />
+                    </div>
+                </div>
+                <div class="row form-group">
+                    <div class="col-lg-6 col-md-6 form-group">
+                        <label>用户名</label>
+                        <input type="text" v-model="username" class="form-control" placeholder="用户名" v-validate:username="{
+                           required:{rule:true,message: '用户名不能为空'}
+                           }" />
+                    </div>
+                </div>
+                <div class="row form-group">
+                    <div class="col-lg-6 col-md-6 form-group">
+                        <label>密码</label>
+                        <input type="password" v-model="password" class="form-control" placeholder="密码" v-validate:password="{
+                           required:{rule:true,message: '密码不能为空'}
+                           }" />
+                    </div>
+                </div>
+                <div class="row form-group">
+                    <div class="col-lg-6 col-md-6 form-group">
+                        <select v-model="roleId" class="form-control" v-validate:roleId="{required:true}">
+                            <option value="" selected>-请选择-</option>
+                            <option v-for="option in roles" v-bind:value="option.Id">
+                                {{ option.Name }}
+                            </option>
+                        </select>
+                    </div>
+                </div>
+                <div class="row form-group">
+                    <div class="col-lg-6 col-md-6 form-group">
+                        <label>是否系统管理员</label>
+                        <div class="margin-right-15 templatemo-inline-block">
+                            <input type="checkbox" v-model="isSystem" name="server" id="c3">
+                            <label for="c3" class="font-weight-400"><span></span></label>
+                        </div>
+                    </div>
+                </div>
+                <div class="row form-group">
+                    <div class="col-lg-6 col-md-6 form-group">
+                        <button v-if="$validation.valid" v-on:click="add" class="templatemo-white-button">确定</button>
+                    </div>
+                </div>
+            </validator>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    var vue = new Vue({
+        el: '#app',
+        data: {
+            name: '',
+            username: '',
+            password: '',
+            isSystem: false,
+            roles: [],
+            roleId: ''
+        },
+        ready: function () {
+            var _self = this;
+            _self.id = Request("id");
+            this.$http.get('/Role/GetList', function (data, status, request) {
+                $.each(data, function (i, item) {
+                    _self.roles.push(item);
+                });
+            });
+        },
+        methods: {
+            add: function (event) {
+                this.$http.get('/User/Insert?RoleId=' + this.roleId + '&Name=' + this.name + '&UserName=' + this.username + '&PassWord=' + this.password + '&IsSystem=' + this.isSystem, function (data, status, request) {
+                    if (data.IsSuccess) {
+                        location.href = '/User/Index';
+                    } else {
+                        alert(data.ErrorMsg);
+                    }
+                });
+            }
+        }
+    });
+</script>

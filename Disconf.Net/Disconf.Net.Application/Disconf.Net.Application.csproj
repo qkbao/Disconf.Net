@@ -1,0 +1,117 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{9E5E62C4-BC57-4593-9428-F0946DBCBB89}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Disconf.Net.Application</RootNamespace>
+    <AssemblyName>Disconf.Net.Application</AssemblyName>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="DapperExtensions, Version=1.4.3.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\DapperExtensions.1.4.4\lib\net40\DapperExtensions.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Runtime.Caching" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AbstractResponse.cs" />
+    <Compile Include="Api\App\IAppApiService.cs" />
+    <Compile Include="Api\App\AppRequest.cs" />
+    <Compile Include="Api\App\AppResponse.cs" />
+    <Compile Include="Api\App\AppApiService.cs" />
+    <Compile Include="Api\BaseService.cs" />
+    <Compile Include="Api\Config\ConfigRequest.cs" />
+    <Compile Include="Api\Config\ConfigResponse.cs" />
+    <Compile Include="Api\Config\ConfigApiService.cs" />
+    <Compile Include="Api\Config\IConfigApiService.cs" />
+    <Compile Include="Api\Zookeeper\IZookeeperService.cs" />
+    <Compile Include="Api\Zookeeper\ZooKeeperResponse.cs" />
+    <Compile Include="Api\Zookeeper\ZookeeperService.cs" />
+    <Compile Include="ErrorResponse.cs" />
+    <Compile Include="Implementation\AppServiceImpl.cs" />
+    <Compile Include="Implementation\ConfigServiceImpl.cs" />
+    <Compile Include="Implementation\EnvServiceImpl.cs" />
+    <Compile Include="Implementation\LogServiceImpl.cs" />
+    <Compile Include="Implementation\PermissionServiceImpl.cs" />
+    <Compile Include="Implementation\RoleServiceImpl.cs" />
+    <Compile Include="Implementation\TemplateServiceImpl.cs" />
+    <Compile Include="Implementation\UserServiceImpl.cs" />
+    <Compile Include="Interfaces\IAppService.cs" />
+    <Compile Include="Interfaces\IConfigService.cs" />
+    <Compile Include="Interfaces\IEnvService.cs" />
+    <Compile Include="Interfaces\ILogService.cs" />
+    <Compile Include="Interfaces\IPermissionService.cs" />
+    <Compile Include="Interfaces\IRoleService.cs" />
+    <Compile Include="Interfaces\ITemplateService.cs" />
+    <Compile Include="Interfaces\IUserService.cs" />
+    <Compile Include="IRequest.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ResponseWrapper.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Disconf.Net.Core\Disconf.Net.Core.csproj">
+      <Project>{f08853ff-4f87-468e-a06a-68e4ce0e3da3}</Project>
+      <Name>Disconf.Net.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Disconf.Net.Domain\Disconf.Net.Domain.csproj">
+      <Project>{4C522FD9-9E4D-4636-8735-8A683A72FDF2}</Project>
+      <Name>Disconf.Net.Domain</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Disconf.Net.Infrastructure\Disconf.Net.Infrastructure.csproj">
+      <Project>{efae8681-f658-4871-b32d-fcf2ad984fe8}</Project>
+      <Name>Disconf.Net.Infrastructure</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Disconf.Net.Model\Disconf.Net.Model.csproj">
+      <Project>{3ACBD6E8-5322-4863-B7DD-DE0EABB3F3BF}</Project>
+      <Name>Disconf.Net.Model</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Disconf.Net.Repositories\Disconf.Net.Repositories.csproj">
+      <Project>{0432826d-d89e-49a3-a437-eaaa86f594a2}</Project>
+      <Name>Disconf.Net.Repositories</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

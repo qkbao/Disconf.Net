@@ -1,0 +1,142 @@
+﻿@{
+    Layout = "~/Views/Shared/_HomeLayout.cshtml";
+    ViewBag.Titlt = "配置列表";
+}
+
+<div class="templatemo-top-nav-container">
+    <div class="row" id="version">
+        <nav class="templatemo-top-nav col-lg-12 col-md-12">
+            <ul class="text-uppercase">
+                <li v-for="version in versionItems">
+                    <a v-on:click="showList(version.Version)" class="active" style="cursor:pointer">
+                        {{version.Version}}
+                    </a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+</div>
+<div class="templatemo-content-widget white-bg">
+    <div class="panel panel-default no-border">
+        <div class="panel-heading border-radius-10">
+            <h2>配置列表</h2>
+        </div>
+        <div class="panel-body" id="list">
+            @*<div class="form-group text-right">
+                <a href="/Template/DownloadZip?version={{showVersion}}" class="templatemo-white-button">下载</a>
+            </div>*@
+            <div class="templatemo-content-widget no-padding">
+                <div class="panel panel-default table-responsive">
+                    <table class="table table-striped table-bordered templatemo-user-table" style="table-layout:fixed;">
+                        <thead>
+                            <tr>
+                                <td style="width:40px">序号</td>
+                                <td style="width:200px">名称</td>
+                                <td>描述</td>
+                                <td>值</td>
+                                <td>版本号</td>
+                                <td>同步状态</td>
+                                <td>详情</td>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr v-if="item.Version == showVersion" v-show="true" v-for="item in items">
+                                <td>{{item.Num}}</td>
+                                <td>{{item.Name}}</td>
+                                <td title="{{item.Description}}" class="textDis">{{item.Description}}</td>
+                                <td title="{{item.DefaultValue}}" class="textDis">{{item.DefaultValue}}</td>
+                                <td>{{item.Version}}</td>
+                                <td>{{{item.ZookeeperChildren}}}</td>
+                                <td v-if="item.IsDelete" v-show="true">
+                                    <a href="/Config/Edit?id={{item.Id}}">启用</a>
+                                </td>
+                                <td v-else v-show="true">
+                                    <a href="/Config/Edit?id={{item.Id}}">编辑</a>
+                                    <a style="cursor:pointer" v-on:click="deleteC(item.ConfigId)">禁用</a>
+                                </td>
+                            </tr>
+                            <tr v-if="item.Version != showVersion" v-show="false" v-for="item in items">
+                                <td>{{item.Num}}</td>
+                                <td>{{item.Name}}</td>
+                                <td title="{{item.Description}}" class="textDis">{{item.Description}}</td>
+                                <td title="{{item.DefaultValue}}" class="textDis">{{item.DefaultValue}}</td>
+                                <td>{{item.Version}}</td>
+                                <td>{{{item.ZookeeperChildren}}}</td>
+                                <td v-if="item.IsDelete" v-show="true">
+                                    <a href="/Config/Edit?id={{item.Id}}">启用</a>
+                                </td>
+                                <td v-else v-show="true">
+                                    <a href="/Config/Edit?id={{item.Id}}">编辑</a>
+                                    <a style="cursor:pointer" v-on:click="deleteC(item.ConfigId)">禁用</a>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    var vue = new Vue({
+        el: '#version',
+        data: {
+            versionItems: [],
+            items: []
+        },
+        ready: function () {
+            var _self = this;
+            _self.$http.get('/Template/GetVersion', function (data, status, request) {
+                $.each(data, function (i, item) {
+                    _self.versionItems.push(item);
+                });
+            });
+        },
+        methods: {
+            showList: function (version) {
+                listVue.$set('showVersion', version);
+            }
+        }
+    });
+
+    var listVue = new Vue({
+        el: '#list',
+        data: {
+            versionItems: [],
+            items: [],
+            showVersion: ''
+        },
+        methods: {
+            deleteC: function (id) {
+                this.$http.get('/Config/Delete?id=' + id, function (data, status, request) {
+                    if (data) {
+                        location.reload();
+                    } else {
+                        alert("发生错误，请重试");
+                    }
+                });
+            }
+        },
+        ready: function () {
+            var _self = this;
+            _self.$http.get('/Template/GetTemplateList', function (data, status, request) {
+                $.each(data, function (i, item) {
+                    $.each(item.List, function (t, obj) {
+                        if (i == 0) {
+                            _self.showVersion = item.Version;
+                        }
+                        obj.Num = t + 1;
+                        obj.Version = item.Version;
+                        if (obj.ConfigValue) {
+                            obj.DefaultValue = obj.ConfigValue;
+                            obj.IsDelete = false;
+                        } else {
+                            obj.IsDelete = true;
+                        }
+                        _self.items.push(obj);
+                    });
+                });
+            });
+        }
+    });
+</script>

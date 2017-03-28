@@ -1,0 +1,139 @@
+﻿@{
+    Layout = "~/Views/Shared/_HomeLayout.cshtml";
+    ViewBag.Title = "编辑模板";
+}
+@Disconf.Net.Web.Models.MvcHtml.GetUploadHtml()
+<div class="templatemo-content-widget white-bg">
+    <div class="panel panel-default no-border">
+        <div class="panel-heading border-radius-10">
+            <h2>编辑模板</h2>
+        </div>
+        <div class="panel-body" id="app">
+            <validator name="validation">
+                <div class="row form-group">
+                    <div class="col-lg-6 col-md-6 form-group">
+                        <label>模板名称</label>
+                        <input type="text" v-model="name" class="form-control" placeholder="名称" v-validate:name="{
+                           required:{rule:true,message: '名称不能为空'}
+                           }" />
+                    </div>
+                </div>
+                <div class="row form-group">
+                    <div class="col-lg-6 col-md-6 form-group">
+                        <label>模板描述</label>
+                        <textarea type="text" v-model="description" class="form-control" placeholder="描述" v-validate:description="{
+                           required:{rule:true,message: '描述不能为空'}
+                           }"></textarea>
+                    </div>
+                </div>
+                <div class="row form-group">
+                    <div class="col-lg-3 col-md-3 form-group">
+                        <label>模板类型</label>
+                        <select v-on:change="showButton" v-model="type" class="form-control">
+                            <option value="0">键值对</option>
+                            <option value="1">文件</option>
+                        </select>
+                    </div>
+                    <div class="col-lg-6 col-md-3 form-group">
+                        <div class="col-lg-6 col-md-3 form-group upload">
+                            <a>
+                                上传文件
+                                <div class="layer flash_area">
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <div class="row form-group">
+                    <div class="col-lg-6 col-md-6 form-group">
+                        <label>默认值</label>
+                        <textarea style="height:350px;width:450px" type="text" rows="8" v-model="defaultValue" class="form-control" placeholder="默认值" v-validate:defaultValue="{
+                           required:{rule:true,message: '默认值不能为空'}
+                           }"></textarea>
+                    </div>
+                </div>
+                <div class="row form-group">
+                    <div class="col-lg-3 col-md-3 form-group">
+                        <label>版本号</label>
+                        <select id="version" v-model="version" class="form-control">
+                            <option v-if="version == item.Version" v-for="item in items" v-bind:value="item.Id" selected="selected">{{item.Version}}</option>
+                            <option v-if="version != item.Version" v-for="item in items" v-bind:value="item.Id">{{item.Version}}</option>
+                            <option value="">新版本号</option>
+                        </select>
+                    </div>
+                    <div class="col-lg-3 col-md-3 form-group">
+                        <input v-if="version == ''" v-show="true" v-model="newVersion" type="text" class="form-control uploadFile" placeholder="版本号" />
+                        <input v-if="version != ''" v-show="false" v-model="newVersion" type="text" class="form-control uploadFile" placeholder="版本号" />
+                    </div>
+                </div>
+                <div class="row form-group">
+                    <div class="col-lg-6 col-md-6 form-group">
+                        <button v-if="$validation.valid" v-on:click="update" class="templatemo-white-button">确定</button>
+                    </div>
+                </div>
+            </validator>
+        </div>
+    </div>
+</div>
+<script src="@Url.Content("~/Content/Uploader/jquery.fine-uploader.min.js")"></script>
+<script src="@Url.Content("~/Scripts/upload.js")"></script>
+<script type="text/javascript">
+    var vue = new Vue({
+        el: '#app',
+        data: {
+            id: '',
+            name: '',
+            description: '',
+            defaultValue: '',
+            version: '',
+            type: '0',
+            newVersion: '',
+            items: []
+        },
+        methods: {
+            update: function (event) {
+                var _value = $.trim(this.name);
+                if (this.version == "" && this.newVersion == "") {
+                    alert("请选择或输入版本号");
+                    return false;
+                }
+                var _version = this.version == "" ? this.newVersion : $('#version option:selected').text();
+                this.$http.post('/Template/Update', { Id: this.id, Name: this.name, Description: this.description, DefaultValue: this.defaultValue, Type: this.type, Version: _version.replace("/", "") },
+                function (data, status, request) {
+                    if (data.IsSuccess) {
+                        location.href = '/Template/Index';
+                    } else {
+                        alert(data.ErrorMsg);
+                    }
+                });
+            },
+            showButton: function (event) {
+                if (event.target.value == "1") {
+                    $(".upload").show();
+                } else {
+                    $(".upload").hide();
+                }
+            }
+        },
+        ready: function () {
+            var _self = this;
+            _self.id = Request("id");
+            _self.$http.get('/Template/GetVersion', function (data, status, request) {
+                $.each(data, function (i, item) {
+                    item.Num = i + 1;
+                    _self.items.push(item);
+                });
+            });
+            this.$http.get('/Template/Get?id=' + _self.id, function (data, status, request) {
+                _self.name = data.Name;
+                _self.description = data.Description;
+                _self.defaultValue = data.DefaultValue;
+                _self.type = data.Type;
+                if (data.Type == "1") {
+                    $(".upload").show();
+                }
+                _self.version = data.Version;
+            });
+        }
+    });
+</script>

@@ -1,0 +1,105 @@
+﻿@{
+    Layout = "~/Views/Shared/_HomeLayout.cshtml";
+    ViewBag.Title = "编辑配置";
+}
+@Disconf.Net.Web.Models.MvcHtml.GetUploadHtml()
+<div class="templatemo-content-widget white-bg">
+    <div class="panel panel-default no-border">
+        <div class="panel-heading border-radius-10">
+            <h2>启用配置</h2>
+        </div>
+        <div class="panel-body" id="app">
+            <validator name="validation">
+                <div class="row form-group">
+                    <div class="col-lg-6 col-md-6 form-group">
+                        <label>模板名称</label>
+                        <input disabled type="text" v-model="name" class="form-control" placeholder="名称" v-validate:name="{
+                           required:{rule:true,message: '名称不能为空'}
+                           }" />
+                    </div>
+                </div>
+                <div class="row form-group">
+                    <div class="col-lg-6 col-md-6 form-group">
+                        <label>值 <a v-on:click="useDefaultValue" style="cursor:pointer;">使用默认值</a></label>
+                        <textarea type="text" rows="8" v-model="value" class="form-control" style="height:350px;width:450px" placeholder="值" v-validate:value="{
+                           required:{rule:true,message: '默认值不能为空'}
+                           }"></textarea>
+                    </div>
+                    <div class="col-lg-6 col-md-3 form-group">
+                        <div class="col-lg-6 col-md-3 form-group upload">
+                            <a>
+                                上传文件
+                                <div class="layer flash_area">
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <div class="row form-group">
+                    <div class="col-lg-6 col-md-6 form-group">
+                        <label>默认值</label>
+                        <input disabled type="text" v-model="defaultValue" class="form-control" placeholder="默认值" />
+                    </div>
+                </div>
+                <div class="row form-group">
+                    <div class="col-lg-6 col-md-6 form-group">
+                        <button v-if="$validation.valid" v-on:click="update" class="templatemo-white-button">确定</button>
+                    </div>
+                </div>
+            </validator>
+        </div>
+    </div>
+</div>
+<script src="@Url.Content("~/Content/Uploader/jquery.fine-uploader.min.js")"></script>
+<script src="@Url.Content("~/Scripts/upload.js")"></script>
+<script type="text/javascript">
+    var vue = new Vue({
+        el: '#app',
+        data: {
+            name: '',
+            defaultValue: '',
+            value: '',
+            id: '',
+            version: '',
+            type: ''
+        },
+        methods: {
+            update: function (event) {
+                this.$http.post('/Config/UpdateConfig',
+                    { templateId: this.id, value: this.value, version: this.version, name: this.name, type: this.type },
+                function (data, status, request) {
+                    if (data.IsSuccess) {
+                        location.href = '/Config/List?id=' + data.Data;
+                    }
+                });
+            },
+            showButton: function (event) {
+                if (event.target.value == "1") {
+                    $(".upload").show();
+                } else {
+                    $(".upload").hide();
+                }
+            },
+            useDefaultValue: function (event) {
+                this.value = this.defaultValue;
+            }
+        },
+        ready: function () {
+            var _self = this;
+            _self.id = Request("id");
+            this.$http.get('/Template/Get?id=' + _self.id, function (data, status, request) {
+                _self.name = data.Name;
+                _self.defaultValue = data.DefaultValue;
+                _self.version = data.Version;
+                if (data.Type == "1") {
+                    configType = true;
+                    $(".upload").show();
+                }
+                _self.type = data.Type;
+            });
+            this.$http.get('/Config/GetConfigByTemplateId?templateId=' + _self.id, function (data, status, request) {
+                _self.value = data.Value;
+            });
+        }
+    });
+</script>

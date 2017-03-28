@@ -1,0 +1,61 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.25420.1
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Disconf.Net.Web", "Disconf.Net.Web\Disconf.Net.Web.csproj", "{7FB4AD0E-96E3-4F42-BA3D-ED5B61911CC4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Disconf.Net.Domain", "Disconf.Net.Domain\Disconf.Net.Domain.csproj", "{4C522FD9-9E4D-4636-8735-8A683A72FDF2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Disconf.Net.Infrastructure", "Disconf.Net.Infrastructure\Disconf.Net.Infrastructure.csproj", "{EFAE8681-F658-4871-B32D-FCF2AD984FE8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Disconf.Net.Model", "Disconf.Net.Model\Disconf.Net.Model.csproj", "{3ACBD6E8-5322-4863-B7DD-DE0EABB3F3BF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Disconf.Net.Application", "Disconf.Net.Application\Disconf.Net.Application.csproj", "{9E5E62C4-BC57-4593-9428-F0946DBCBB89}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Disconf.Net.Repositories", "Disconf.Net.Repositories\Disconf.Net.Repositories.csproj", "{0432826D-D89E-49A3-A437-EAAA86F594A2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Disconf.Net.Core", "Disconf.Net.Core\Disconf.Net.Core.csproj", "{F08853FF-4F87-468E-A06A-68E4CE0E3DA3}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{7FB4AD0E-96E3-4F42-BA3D-ED5B61911CC4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7FB4AD0E-96E3-4F42-BA3D-ED5B61911CC4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7FB4AD0E-96E3-4F42-BA3D-ED5B61911CC4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7FB4AD0E-96E3-4F42-BA3D-ED5B61911CC4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4C522FD9-9E4D-4636-8735-8A683A72FDF2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4C522FD9-9E4D-4636-8735-8A683A72FDF2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4C522FD9-9E4D-4636-8735-8A683A72FDF2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4C522FD9-9E4D-4636-8735-8A683A72FDF2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EFAE8681-F658-4871-B32D-FCF2AD984FE8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EFAE8681-F658-4871-B32D-FCF2AD984FE8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EFAE8681-F658-4871-B32D-FCF2AD984FE8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EFAE8681-F658-4871-B32D-FCF2AD984FE8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3ACBD6E8-5322-4863-B7DD-DE0EABB3F3BF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3ACBD6E8-5322-4863-B7DD-DE0EABB3F3BF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3ACBD6E8-5322-4863-B7DD-DE0EABB3F3BF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3ACBD6E8-5322-4863-B7DD-DE0EABB3F3BF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9E5E62C4-BC57-4593-9428-F0946DBCBB89}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9E5E62C4-BC57-4593-9428-F0946DBCBB89}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9E5E62C4-BC57-4593-9428-F0946DBCBB89}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9E5E62C4-BC57-4593-9428-F0946DBCBB89}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0432826D-D89E-49A3-A437-EAAA86F594A2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0432826D-D89E-49A3-A437-EAAA86F594A2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0432826D-D89E-49A3-A437-EAAA86F594A2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0432826D-D89E-49A3-A437-EAAA86F594A2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F08853FF-4F87-468E-A06A-68E4CE0E3DA3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F08853FF-4F87-468E-A06A-68E4CE0E3DA3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F08853FF-4F87-468E-A06A-68E4CE0E3DA3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F08853FF-4F87-468E-A06A-68E4CE0E3DA3}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		EnterpriseLibraryConfigurationToolBinariesPathV6 = packages\EnterpriseLibrary.TransientFaultHandling.6.0.1304.0\lib\portable-net45+win+wp8
+	EndGlobalSection
+EndGlobal

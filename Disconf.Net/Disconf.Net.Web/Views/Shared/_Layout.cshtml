@@ -1,0 +1,36 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=gb2312" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title</title>
+    @Styles.Render("~/Content/css/bootstrap.min.css")
+    @Styles.Render("~/Content/css/font-awesome.min.css")
+    @Styles.Render("~/Content/css/templatemo-style.css")
+    <script src="@Url.Content("~/Scripts/vue.js")"></script>
+    <script src="@Url.Content("~/Scripts/vue-validator.min.js")"></script>
+    <script src="@Url.Content("~/Scripts/vue-resource.min.js")"></script>
+    <script src="@Url.Content("~/Scripts/jquery-1.10.2.min.js")"></script>
+    @*<script src="@Url.Content("~/Scripts/vue-router.min.js")"></script>*@
+    <script src="@Url.Content("~/Scripts/common.js")"></script>
+</head>
+<body class="light-gray-bg">
+    <div class="templatemo-flex-row">
+        <!-- Main content -->
+        <div class="templatemo-content col-1 light-gray-bg">
+            <div class="templatemo-content-container">
+                <div class="templatemo-content-widget white-bg">
+                    <div class="panel panel-default no-border">
+                        @RenderBody()
+                    </div>
+                </div>
+            </div>
+            <footer class="text-right">
+                <p>
+                    Copyright &copy; 2016 | Designed by SuperDp
+                </p>
+            </footer>
+        </div>
+    </div>
+</body>
+</html>
